@@ -14,17 +14,20 @@
 ```
 多重實相界/
 ├── novel_write.py                  # 寫作助手腳本
+├── VISION.md                       # 創作核心理念
+├── core/                           # 核心概念草稿
+│   ├── 01.md
+│   └── 02.md
 ├── docs/
 │   ├── manifest.md                 # 本檔案（總覽）
 │   ├── volume_plan.md              # 各卷神話規劃
-│   ├── Content.md                  # 總目錄
+│   ├── vol1.md                     # 第一卷章節綱要
+│   ├── vol2.md                     # 第二卷章節綱要
 │   ├── canon/                      # 世界觀核心設定
 │   ├── characters/                 # 人物設定與弧線
 │   └── rules/                      # 寫作規範
-├── chapter/                        # 生成的正文章節
-│   ├── 01/                         # 第一卷
-│   └── 02/                         # 第二卷
-└── README.md
+└── chapter/                        # 生成的正文章節
+    └── 01/                         # 第一卷（自動建立）
 ```
 
 
@@ -57,5 +60,5 @@
 
 1. 修改 `BIBLE_FILES` 列表（加入所有 canon 與 characters 檔案）
 2. 執行 `python novel_write.py cache-create` 建立快取
-3. 建立章節綱要檔案（例如 `docs/多重實相界_第1卷_章節綱要.md`）
+3. 在 `docs/vol1.md`、`docs/vol2.md` 等綱要中用 `#### 第N章 【標題】` 格式規劃章節
 4. 使用 `write` 或 `batch` 指令生成章節

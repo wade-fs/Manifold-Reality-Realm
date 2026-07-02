@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-novel_write.py - 源流福爾摩沙 寫作助手
+novel_write.py - 多重實相界 寫作助手
 使用 Gemini Context Caching API 快取世界觀聖經，大幅節省 token
 
 原理：
@@ -232,7 +232,7 @@ def get_nav_links(chapter_num: int) -> str:
         links.append(f"[上一章：第 {prev_num} 章](../{prev_vol:02d}/{prev_num:03d}.md)")
     
     # 目錄 (假設放在根目錄)
-    links.append("[回目錄](../Content.md)")
+    links.append("[回目錄](../../docs/manifest.md)")
     
     # 下一章
     next_num = chapter_num + 1
@@ -340,11 +340,11 @@ def cmd_batch(args):
         nav_links = get_nav_links(ch_num)
 
         extra_parts.append({"text": f"""
-請撰寫《源流福爾摩沙》第 {ch_num} 章的完整正文。
+請撰寫《多重實相界》第 {ch_num} 章的完整正文。
 
 === 必須嚴格遵守的輸出結構 ===
 
-# 源流福爾摩沙
+# 多重實相界
 
 ## {volume_title}
 
@@ -458,7 +458,7 @@ def generate_with_retry(
 ) -> tuple[dict, str]:
     """
     呼叫 Gemini 生成，若字數不足 min_chars 則補一句提醒再重試一次。
-    字數規範已寫入 README.md 快取，不需在 prompt 中重複長篇說明。
+    字數規範已寫入 manifest.md 快取，不需在 prompt 中重複長篇說明。
     回傳 (data, text)。
     """
     cache_name = load_cache_id()
@@ -472,7 +472,7 @@ def generate_with_retry(
         if cache_name:
             payload = build_payload_with_cache(cache_name, parts, gen_config)
         else:
-            readme = (PROJECT_ROOT / "README.md").read_text(encoding="utf-8")
+            readme = (PROJECT_ROOT / "docs" / "manifest.md").read_text(encoding="utf-8")
             payload = build_payload_no_cache(readme, parts, gen_config)
 
         data = call_gemini(payload)
@@ -526,7 +526,7 @@ def cmd_cache_create(args):
     url = f"{BASE_URL}/v1beta/cachedContents?key={API_KEY}"
     payload = {
         "model": MODEL,
-        "displayName": "源流福爾摩沙聖經",
+        "displayName": "多重實相界聖經",
         "contents": [
             {
                 "role": "user",
@@ -537,7 +537,7 @@ def cmd_cache_create(args):
         "systemInstruction": {
             "parts": [{
                 "text": (
-                    "你是《源流福爾摩沙》的專屬寫作助手。"
+                    "你是《多重實相界》的專屬寫作助手。"
                     "以上是本作的完整世界觀聖經、歷史事件資料庫、踏印系統與職涯系統。"
                     "撰寫時必須嚴格遵守這些設定，保持前後連貫。"
                     "風格要求：散文遊記氣質，細膩觀察，歷史與人情並重，不渲染戰爭暴力，著重無名之人的聲音。"
@@ -647,7 +647,7 @@ def get_payload(extra_parts: list, gen_config: dict) -> dict:
         print("   ⚠️  無快取，改用內嵌模式（token 較多）")
         print("      建議先執行: python novel_write.py cache-create")
         # fallback：讀 README 作為最小聖經
-        readme = (PROJECT_ROOT / "README.md").read_text(encoding="utf-8")
+        readme = (PROJECT_ROOT / "docs" / "manifest.md").read_text(encoding="utf-8")
         return build_payload_no_cache(readme, extra_parts, gen_config)
 
 def get_chapter_title(chapter_prompt: str) -> str | None:
@@ -715,11 +715,11 @@ def cmd_write(args):
     nav_links = get_nav_links(chapter_num)
     extra_parts.append({
     "text": f"""
-請撰寫《源流福爾摩沙》第 {chapter_num} 章的完整正文。
+請撰寫《多重實相界》第 {chapter_num} 章的完整正文。
 
 === 必須嚴格遵守的輸出結構 ===
 
-# 源流福爾摩沙
+# 多重實相界
 
 ## {volume_title}
 
@@ -793,7 +793,7 @@ def cmd_expand(args):
 
     extra_parts = [{
         "text": f"""
-以下是《源流福爾摩沙》第 {chapter_num} 章的草稿：
+以下是《多重實相界》第 {chapter_num} 章的草稿：
 
 {original}
 
@@ -807,7 +807,7 @@ def cmd_expand(args):
 
 === 必須嚴格遵守的輸出結構 ===
 
-# 源流福爾摩沙
+# 多重實相界
 
 ## {volume_title}
 
@@ -867,7 +867,7 @@ def cmd_synopsis(args):
 
     extra_parts = [{
         "text": f"""
-以下是《源流福爾摩沙》第 {start}～{end} 章的內容：
+以下是《多重實相界》第 {start}～{end} 章的內容：
 
 {"".join(chapters_text)}
 
@@ -895,7 +895,7 @@ def cmd_synopsis(args):
 
 # ─── CLI ──────────────────────────────────────────────────────────────────────
 def main():
-    parser = argparse.ArgumentParser(description="源流福爾摩沙寫作助手（Context Caching 版）")
+    parser = argparse.ArgumentParser(description="多重實相界寫作助手（Context Caching 版）")
     sub = parser.add_subparsers(dest="cmd", required=True)
 
     sub.add_parser("cache-create", help="建立/更新世界觀聖經快取（每次到期後需重新執行）")
@@ -944,4 +944,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
