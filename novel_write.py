@@ -83,15 +83,20 @@ CACHE_FILE   = PROJECT_ROOT / ".cache_id.json"   # 儲存 cachedContent name
 
 # 要進入快取的「聖經」文件（越穩定越適合快取）
 BIBLE_FILES = [
-    PROJECT_ROOT / "docs" / "manifest.md",
+    PROJECT_ROOT / "docs" / "manifest.md",           # 如果有
+    PROJECT_ROOT / "docs" / "volume_plan.md",
     PROJECT_ROOT / "docs" / "canon" / "novel_bible.md",
-    PROJECT_ROOT / "docs" / "canon" / "footprint_system.md",
-    PROJECT_ROOT / "docs" / "canon" / "memory_system.md",
-    PROJECT_ROOT / "docs" / "canon" / "settlement_and_population_system.md",
-    PROJECT_ROOT / "docs" / "canon" / "historical_events.md",   # 剛寫的
-    PROJECT_ROOT / "docs" / "canon" / "profession_system.md",   # 剛寫的
     PROJECT_ROOT / "docs" / "canon" / "timeline.md",
     PROJECT_ROOT / "docs" / "canon" / "factions.md",
+    PROJECT_ROOT / "docs" / "canon" / "historical_events.md",
+    PROJECT_ROOT / "docs" / "canon" / "memory_system.md",
+    PROJECT_ROOT / "docs" / "canon" / "footprint_system.md",
+    PROJECT_ROOT / "docs" / "canon" / "settlement_and_population_system.md",
+    PROJECT_ROOT / "docs" / "canon" / "profession_system.md",
+    PROJECT_ROOT / "docs" / "rules" / "writing_style.md",
+    PROJECT_ROOT / "docs" / "rules" / "continuity.md",
+    PROJECT_ROOT / "docs" / "characters" / "main_characters.md",
+    PROJECT_ROOT / "docs" / "characters" / "character_arcs.md",
 ]
 
 # 快取 TTL（秒）。寫作 session 建議 3600（1 小時），長期存放最多 86400
@@ -145,10 +150,10 @@ def get_path_info(chapter_num: int):
     volume_str = f"{volume:02d}"
     
     chapter_dir = PROJECT_ROOT / "chapter" / volume_str
-    # 確保目錄存在
     chapter_dir.mkdir(parents=True, exist_ok=True)
     
-    outline_name = f"源流福爾摩沙_第{volume}卷_章節綱要.md"
+    # 簡化為 vol{volume}.md
+    outline_name = f"vol{volume}.md"
     outline_path = PROJECT_ROOT / "docs" / outline_name
     
     return {
@@ -156,31 +161,32 @@ def get_path_info(chapter_num: int):
         "volume_str": volume_str,
         "chapter_dir": chapter_dir,
         "outline_path": outline_path,
-        "outline_glob": f"*{volume}*卷*綱要*.md"
+        "outline_glob": "vol*.md"
     }
 
 def get_volume_act_info(chapter_num: int) -> tuple[str, str]:
     """
-    對應《源流福爾摩沙》的歷史版本結構。
-    volume_title = 歷史時代版本
-    act_title    = 地區或事件弧
+    從 vol{volume}.md 中讀取 act_title（如果有定義）
     """
-    # 卷數仍以100章為單位，但標題換成歷史版本名
-    version_titles = {
-        1: "v0.1－v1.0｜荒蠻紀・海商紀・清領前期",
-        2: "v1.2－v1.5｜民變年代・清領晚期",
-        3: "v1.9－v2.0｜乙未之殤・抗日烽火",
-        4: "v2.1－v2.2｜覺醒年代・山林怒火",
-        5: "v3.0－v3.1｜光復迷霧・戒嚴年代",
-        6: "v3.2－v4.0｜經濟起飛・民主紀元",
-    }
     volume = (chapter_num - 1) // 100 + 1
-    volume_title = version_titles.get(volume, f"第{volume}卷")
+    volume_title = f"第{volume}卷"
 
-    # act_title 對應地區弧，先用簡單對應，之後可從綱要解析
-    act_title = "民雄・嘉南平原"  # 預設新手村
+    # 預設值
+    act_title = "山村與界域"
 
-    # 後續可依章節範圍細化
+    # 嘗試從 vol{volume}.md 讀取 act_title
+    outline_path = PROJECT_ROOT / "docs" / f"vol{volume}.md"
+    if outline_path.exists():
+        try:
+            text = outline_path.read_text(encoding="utf-8")
+            # 尋找 act_title 定義，例如：act_title: 山村與界域
+            import re
+            match = re.search(r'act_title\s*[:：]\s*(.+)', text)
+            if match:
+                act_title = match.group(1).strip()
+        except:
+            pass
+
     return volume_title, act_title
 
 
