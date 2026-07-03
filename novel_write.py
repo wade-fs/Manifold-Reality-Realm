@@ -83,7 +83,7 @@ CACHE_FILE   = PROJECT_ROOT / ".cache_id.json"   # 儲存 cachedContent name
 
 # 要進入快取的「聖經」文件（越穩定越適合快取）
 BIBLE_FILES = [
-    PROJECT_ROOT / "docs" / "canon" / "atom.md",           # 最高權重：世界核心公理
+#    PROJECT_ROOT / "docs" / "canon" / "atom.md",           # 最高權重：世界核心公理
     PROJECT_ROOT / "docs" / "canon" / "novel_bible.md",   # 世界觀聖經主體
     PROJECT_ROOT / "docs" / "canon" / "religion.md",       # 宗門教派設定
     PROJECT_ROOT / "docs" / "canon" / "creative-outline.md", # 創作綱領與寫作原則
