@@ -92,8 +92,10 @@ BIBLE_FILES = [
     PROJECT_ROOT / "docs" / "rules" / "chapter_template.md", # 章節模板
     PROJECT_ROOT / "docs" / "characters" / "main_character.md", # 主角設定
     PROJECT_ROOT / "docs" / "manifest.md",                 # 總綱（fallback）
-    PROJECT_ROOT / "docs" / "vol1.md",                     # 卷綱要
 ]
+# 動態加入所有現有的 vol*.md 卷綱要
+vol_files = sorted(list((PROJECT_ROOT / "docs").glob("vol*.md")), key=lambda p: p.name)
+BIBLE_FILES.extend(vol_files)
 
 # 快取 TTL（秒）。寫作 session 建議 3600（1 小時），長期存放最多 86400
 CACHE_TTL_SECONDS = 86400
@@ -142,7 +144,7 @@ def cmd_list_models(args):
 
 def get_path_info(chapter_num: int):
     """根據章節號計算卷數、目錄及對應綱要檔名"""
-    volume = (chapter_num - 1) // 100 + 1
+    volume = (chapter_num - 1) // 40 + 1
     volume_str = f"{volume:02d}"
     
     chapter_dir = PROJECT_ROOT / "chapter" / volume_str
@@ -164,7 +166,7 @@ def get_volume_act_info(chapter_num: int) -> tuple[str, str]:
     """
     從 vol{volume}.md 中讀取 act_title（如果有定義）
     """
-    volume = (chapter_num - 1) // 100 + 1
+    volume = (chapter_num - 1) // 40 + 1
     volume_title = f"第{volume}卷"
 
     # 預設值
@@ -224,7 +226,7 @@ def get_nav_links(chapter_num: int) -> str:
     # 上一章
     if chapter_num > 1:
         prev_num = chapter_num - 1
-        prev_vol = (prev_num - 1) // 100 + 1
+        prev_vol = (prev_num - 1) // 40 + 1
         links.append(f"[上一章：第 {prev_num} 章](../{prev_vol:02d}/{prev_num:03d}.md)")
     
     # 目錄 (假設放在根目錄)
@@ -232,7 +234,7 @@ def get_nav_links(chapter_num: int) -> str:
     
     # 下一章
     next_num = chapter_num + 1
-    next_vol = (next_num - 1) // 100 + 1
+    next_vol = (next_num - 1) // 40 + 1
     links.append(f"[下一章：第 {next_num} 章](../{next_vol:02d}/{next_num:03d}.md)")
 
     nav_str = " | ".join(links)
