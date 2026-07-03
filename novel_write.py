@@ -83,16 +83,16 @@ CACHE_FILE   = PROJECT_ROOT / ".cache_id.json"   # 儲存 cachedContent name
 
 # 要進入快取的「聖經」文件（越穩定越適合快取）
 BIBLE_FILES = [
-    PROJECT_ROOT / "docs" / "manifest.md",           # 如果有
-    PROJECT_ROOT / "docs" / "volume_plan.md",
-    PROJECT_ROOT / "docs" / "canon" / "atom.md",
-    PROJECT_ROOT / "docs" / "canon" / "novel_bible.md",
-    PROJECT_ROOT / "docs" / "canon" / "creative-outline.md",
-    PROJECT_ROOT / "docs" / "canon" / "religion.md",
-    PROJECT_ROOT / "docs" / "rules" / "writing_style.md",
-    PROJECT_ROOT / "docs" / "rules" / "continuity.md",
-    PROJECT_ROOT / "docs" / "rules" / "writing_style.md",
-    PROJECT_ROOT / "docs" / "characters" / "main_characters.md",
+    PROJECT_ROOT / "docs" / "canon" / "atom.md",           # 最高權重：世界核心公理
+    PROJECT_ROOT / "docs" / "canon" / "novel_bible.md",   # 世界觀聖經主體
+    PROJECT_ROOT / "docs" / "canon" / "religion.md",       # 宗門教派設定
+    PROJECT_ROOT / "docs" / "canon" / "creative-outline.md", # 創作綱領與寫作原則
+    PROJECT_ROOT / "docs" / "rules" / "writing_style.md",  # 寫作風格
+    PROJECT_ROOT / "docs" / "rules" / "continuity.md",     # 連續性規範
+    PROJECT_ROOT / "docs" / "rules" / "chapter_template.md", # 章節模板
+    PROJECT_ROOT / "docs" / "characters" / "main_character.md", # 主角設定
+    PROJECT_ROOT / "docs" / "manifest.md",                 # 總綱（fallback）
+    PROJECT_ROOT / "docs" / "vol1.md",                     # 卷綱要
 ]
 
 # 快取 TTL（秒）。寫作 session 建議 3600（1 小時），長期存放最多 86400
@@ -358,17 +358,18 @@ def cmd_batch(args):
 {prompt}
 
 === 寫作要求 ===
+- **夢境呈現原則**：絕對禁止使用「他正在做一個夢」「夢裡」「夢境中」等直接表述。必須使用 `---` 自然分隔夢境與現實，讓夢境讀起來如同另一層真實。違反此規則視為重大錯誤。
 - 必須完整輸出上方標題結構（包含 #、##、###、第X章 與 導覽連結）。
 - **正文結束後必須再次貼上完全相同的導覽連結**：
    {nav_links}
-- 字數至少 2100 字。
+- 字數至少 3500 字。
 - Markdown 格式。
 - 直接輸出，不要額外說明。
 """})
 
         gen_config = {"temperature": 0.85, "maxOutputTokens": 8192}
 
-        MIN_CHARS = 2100
+        MIN_CHARS = 3500
         try:
             data, text = generate_with_retry(extra_parts, gen_config, min_chars=MIN_CHARS)
 
@@ -449,7 +450,7 @@ def count_zh(text: str) -> int:
 def generate_with_retry(
     extra_parts: list,
     gen_config: dict,
-    min_chars: int = 2100,
+    min_chars: int = 3500,
     max_retries: int = 2,
 ) -> tuple[dict, str]:
     """
@@ -533,10 +534,10 @@ def cmd_cache_create(args):
         "systemInstruction": {
             "parts": [{
                 "text": (
-                    "你是《修仙志怪錄》的專屬寫作助手。"
-                    "以上是本作的完整世界觀聖經、歷史事件資料庫、踏印系統與職涯系統。"
-                    "撰寫時必須嚴格遵守這些設定，保持前後連貫。"
-                    "風格要求：散文遊記氣質，細膩觀察，歷史與人情並重，不渲染戰爭暴力，著重無名之人的聲音。"
+                    "你是《修仙志怪錄》的專屬寫作助手。\n\n"
+                    "以下是本作的設定檔案，已按權重由高到低排序（越前面越優先遵守）：\n"
+                    + "\n".join([f"{i+1}. {p.name}" for i, p in enumerate(BIBLE_FILES)])
+                    + "\n\n撰寫時必須嚴格優先遵守前面的檔案內容，保持世界觀與風格前後連貫。"
                 )
             }]
         }
@@ -733,12 +734,13 @@ def cmd_write(args):
 {chapter_prompt}
 
 === 寫作要求 ===
-1. 必須從上方完整標題結構開始輸出（包含導覽連結到 ---）。
-2. 正文使用標準 Markdown 格式（段落、對話、**強調** 等）, 正文結束後**必須再次加上相同的導覽連結**。
-3. 字數至少 2100 字（純中文）。
-4. 嚴格遵守世界觀聖經、人物設定與前文連貫性。
-5. 風格：慢節奏、細膩觀察、富有物理質感的科幻散文。
-6. 禁止在正文前額外說明或 "已生成" 之類的文字。
+- **夢境呈現原則**：絕對禁止使用「他正在做一個夢」「夢裡」「夢境中」等直接表述。必須使用 `---` 自然分隔夢境與現實，讓夢境讀起來如同另一層真實。違反此規則視為重大錯誤。
+- 必須從上方完整標題結構開始輸出（包含導覽連結到 ---）。
+- 正文使用標準 Markdown 格式（段落、對話、**強調** 等）, 正文結束後**必須再次加上相同的導覽連結**。
+- 字數至少 3500 字（純中文）。
+- 嚴格遵守世界觀聖經、人物設定與前文連貫性。
+- 風格：慢節奏、細膩觀察、富有物理質感的科幻散文。
+- 禁止在正文前額外說明或 "已生成" 之類的文字。
 """
     })
 
@@ -747,7 +749,7 @@ def cmd_write(args):
         "maxOutputTokens": 8192,
     }
 
-    MIN_CHARS = 2100
+    MIN_CHARS = 3500
     print(f"\n🖊  生成第 {chapter_num} 章（引用前 {len(prev_chapters)} 章作為連貫 context，最少 {MIN_CHARS:,} 字）...")
     data, text = generate_with_retry(extra_parts, gen_config, min_chars=MIN_CHARS)
 
@@ -798,7 +800,7 @@ def cmd_expand(args):
 1. 補充場景的環境描寫和感官細節（氣味、溫度、光線、聲音）
 2. 深化人物的內心活動和細微情緒變化
 3. 讓對白更自然流暢，加入肢體語言與停頓
-4. 目標字數：2100 字以上
+4. 目標字數：3500 字以上
 5. 嚴格遵守世界觀設定，不添加任何違反設定的內容
 
 === 必須嚴格遵守的輸出結構 ===
@@ -818,6 +820,7 @@ def cmd_expand(args):
 （以下開始擴寫的正文內容）
 
 === 寫作要求 ===
+- **夢境呈現原則**：絕對禁止使用「他正在做一個夢」「夢裡」「夢境中」等直接表述。必須使用 `---` 自然分隔夢境與現實，讓夢境讀起來如同另一層真實。違反此規則視為重大錯誤。
 - 必須從上方完整標題結構開始輸出（包含導覽連結到 ---）。
 - 請直接輸出完整擴寫版本，不需要說明或前言。
 """
