@@ -1,8 +1,8 @@
-# 《多重實相界》專案總覽 (manifest.md)
+# 《修仙志怪錄》專案總覽 (manifest.md)
 
 ## 基本資訊
-- **書名**：多重實相界（Manifold Reality Realm）
-- **類型**：哲學神話 / 沉浸式新神話小說
+- **書名**：修仙志怪錄（Tales of Immortal Cultivation）
+- **類型**：神話 / 章回 / 修仙 / 志怪 小說
 - **核心主題**：理解即是創造，觀測即是改變
 - **主角**：陳進
 - **預計總章節**：600 章
@@ -14,10 +14,6 @@
 ```
 多重實相界/
 ├── novel_write.py                  # 寫作助手腳本
-├── VISION.md                       # 創作核心理念
-├── core/                           # 核心概念草稿
-│   ├── 01.md
-│   └── 02.md
 ├── docs/
 │   ├── manifest.md                 # 本檔案（總覽）
 │   ├── volume_plan.md              # 各卷神話規劃
@@ -26,8 +22,6 @@
 │   ├── vol3.md                     # 第三卷章節綱要
 │   ├── vol4.md                     # 第四卷章節綱要
 │   ├── vol5.md                     # 第五卷章節綱要
-│   ├── vol6.md                     # 第六卷章節綱要
-│   ├── vol7.md                     # 第七卷章節綱要
 │   ├── canon/                      # 世界觀核心設定
 │   ├── characters/                 # 人物設定與弧線
 │   └── rules/                      # 寫作規範
@@ -41,18 +35,13 @@
 ## 主要檔案說明
 
 ### docs/canon/ （世界觀聖經）
+- `atom.md` → 世界公理
 - `novel_bible.md` → 核心世界觀（神話版）
-- `timeline.md` → 神話紀年
-- `factions.md` → 門派法門
-- `historical_events.md` → 重大事件
-- `memory_system.md` → 記憶系統
-- `footprint_system.md` → 踏印系統
-- `settlement_and_population_system.md` → 聚落與生民
-- `profession_system.md` → 職業系統
+- `creative-outline.md` → 創作綱領
+- `religion.md`  → 教門派別
 
 ### docs/characters/
-- `main_characters.md` → 主角與重要配角
-- `character_arcs.md` → 主線人物成長弧
+- `main_character.md` → 主角介紹
 
 ### docs/rules/
 - `writing_style.md` → 寫作風格（神話版）

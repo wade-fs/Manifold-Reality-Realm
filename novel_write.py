@@ -85,18 +85,14 @@ CACHE_FILE   = PROJECT_ROOT / ".cache_id.json"   # 儲存 cachedContent name
 BIBLE_FILES = [
     PROJECT_ROOT / "docs" / "manifest.md",           # 如果有
     PROJECT_ROOT / "docs" / "volume_plan.md",
+    PROJECT_ROOT / "docs" / "canon" / "atom.md",
     PROJECT_ROOT / "docs" / "canon" / "novel_bible.md",
-    PROJECT_ROOT / "docs" / "canon" / "timeline.md",
-    PROJECT_ROOT / "docs" / "canon" / "factions.md",
-    PROJECT_ROOT / "docs" / "canon" / "historical_events.md",
-    PROJECT_ROOT / "docs" / "canon" / "memory_system.md",
-    PROJECT_ROOT / "docs" / "canon" / "footprint_system.md",
-    PROJECT_ROOT / "docs" / "canon" / "settlement_and_population_system.md",
-    PROJECT_ROOT / "docs" / "canon" / "profession_system.md",
+    PROJECT_ROOT / "docs" / "canon" / "creative-outline.md",
+    PROJECT_ROOT / "docs" / "canon" / "religion.md",
     PROJECT_ROOT / "docs" / "rules" / "writing_style.md",
     PROJECT_ROOT / "docs" / "rules" / "continuity.md",
+    PROJECT_ROOT / "docs" / "rules" / "writing_style.md",
     PROJECT_ROOT / "docs" / "characters" / "main_characters.md",
-    PROJECT_ROOT / "docs" / "characters" / "character_arcs.md",
 ]
 
 # 快取 TTL（秒）。寫作 session 建議 3600（1 小時），長期存放最多 86400
