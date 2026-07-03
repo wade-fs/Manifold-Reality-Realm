@@ -1,4 +1,4 @@
-# 《多重實相界》寫作風格規範 (rules/writing_style.md)
+# 《修仙志怪錄》寫作風格規範 (rules/writing_style.md)
 
 ## 1. 整體風格定位
 本作核心是**「新神話哲學」**：

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-novel_write.py - 多重實相界 寫作助手
+novel_write.py - 修仙志怪錄 寫作助手
 使用 Gemini Context Caching API 快取世界觀聖經，大幅節省 token
 
 原理：
@@ -336,11 +336,11 @@ def cmd_batch(args):
         nav_links = get_nav_links(ch_num)
 
         extra_parts.append({"text": f"""
-請撰寫《多重實相界》第 {ch_num} 章的完整正文。
+請撰寫《修仙志怪錄》第 {ch_num} 章的完整正文。
 
 === 必須嚴格遵守的輸出結構 ===
 
-# 多重實相界
+# 修仙志怪錄
 
 ## {volume_title}
 
@@ -522,7 +522,7 @@ def cmd_cache_create(args):
     url = f"{BASE_URL}/v1beta/cachedContents?key={API_KEY}"
     payload = {
         "model": MODEL,
-        "displayName": "多重實相界聖經",
+        "displayName": "修仙志怪錄聖經",
         "contents": [
             {
                 "role": "user",
@@ -533,7 +533,7 @@ def cmd_cache_create(args):
         "systemInstruction": {
             "parts": [{
                 "text": (
-                    "你是《多重實相界》的專屬寫作助手。"
+                    "你是《修仙志怪錄》的專屬寫作助手。"
                     "以上是本作的完整世界觀聖經、歷史事件資料庫、踏印系統與職涯系統。"
                     "撰寫時必須嚴格遵守這些設定，保持前後連貫。"
                     "風格要求：散文遊記氣質，細膩觀察，歷史與人情並重，不渲染戰爭暴力，著重無名之人的聲音。"
@@ -711,11 +711,11 @@ def cmd_write(args):
     nav_links = get_nav_links(chapter_num)
     extra_parts.append({
     "text": f"""
-請撰寫《多重實相界》第 {chapter_num} 章的完整正文。
+請撰寫《修仙志怪錄》第 {chapter_num} 章的完整正文。
 
 === 必須嚴格遵守的輸出結構 ===
 
-# 多重實相界
+# 修仙志怪錄
 
 ## {volume_title}
 
@@ -789,7 +789,7 @@ def cmd_expand(args):
 
     extra_parts = [{
         "text": f"""
-以下是《多重實相界》第 {chapter_num} 章的草稿：
+以下是《修仙志怪錄》第 {chapter_num} 章的草稿：
 
 {original}
 
@@ -803,7 +803,7 @@ def cmd_expand(args):
 
 === 必須嚴格遵守的輸出結構 ===
 
-# 多重實相界
+# 修仙志怪錄
 
 ## {volume_title}
 
@@ -863,7 +863,7 @@ def cmd_synopsis(args):
 
     extra_parts = [{
         "text": f"""
-以下是《多重實相界》第 {start}～{end} 章的內容：
+以下是《修仙志怪錄》第 {start}～{end} 章的內容：
 
 {"".join(chapters_text)}
 
@@ -891,7 +891,7 @@ def cmd_synopsis(args):
 
 # ─── CLI ──────────────────────────────────────────────────────────────────────
 def main():
-    parser = argparse.ArgumentParser(description="多重實相界寫作助手（Context Caching 版）")
+    parser = argparse.ArgumentParser(description="修仙志怪錄寫作助手（Context Caching 版）")
     sub = parser.add_subparsers(dest="cmd", required=True)
 
     sub.add_parser("cache-create", help="建立/更新世界觀聖經快取（每次到期後需重新執行）")

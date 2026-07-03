@@ -1,4 +1,4 @@
-# 《多重實相界》連續性規範（rules/continuity.md）
+# 《修仙志怪錄》連續性規範（rules/continuity.md）
 
 ## 1. 核心連續性原則
 
